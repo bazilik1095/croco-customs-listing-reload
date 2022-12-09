@@ -12,11 +12,9 @@
 
 			let interval =  parseInt(classesToString.match(/\d+/));
 
-			setInterval(reloadOnPage, interval);
-
-			function reloadOnPage() {
-				window.JetEngine.ajaxGetListing;
-			}
+			setInterval(function() {
+			      window.JetEngine.ajaxGetListing();
+			}, interval*1000);
 
 		});
 
