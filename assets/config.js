@@ -8,33 +8,31 @@
 
 			let $this = $( this ),
 			
-			classes = $this.attr('class').match(/\interval--\S+/g),
+			classes   = $this.attr('class').match(/\interval--\S+/g),
 			
 			classesToString = classes.toString(),
 			
-			interval =  parseInt(classesToString.match(/\d+/));
+			interval =  parseInt(classesToString.match(/\d+/)),
 
-			let args = [
-				handler = 'get_listing',
-				container = $this,
-				masonry = false,
-				slider = false,
-				append = false,
-				items = $this.find( '.jet-listing-grid__items' ),
-				nav   = items.data( 'nav' ),
-				query = nav.query,
-				widget_settings = nav.widget_settings,
-				postID    = window.elementorFrontendConfig.post.id,
-				elementID = $this.data( 'id' )
-			];
+			nav      = $this.find('.jet-listing-grid__items').data( 'nav' ),
 
-			console.log(args);
+			query    = nav.query;
+
+			let args = {
+				handler:'get_listing',
+				container:$this.find('.elementor-widget-container'),
+				masonry:false,
+				slider:false,
+				append:false,
+				query: query,
+				widgetSettings: nav.widget_settings,
+			};
 
 			setInterval(function() {
-			     window.JetEngine.ajaxGetListing(args);
+			     window.JetEngine.ajaxGetListing(args, function(response){
+			     	$this.find('.elementor-widget-container').html(response.data.html);
+			     });
 			}, interval*1000);
-
-			console.log(window.JetEngine.ajaxGetListing(args));
 
 		});
 
