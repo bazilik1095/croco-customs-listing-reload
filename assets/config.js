@@ -30,7 +30,11 @@
 
 			setInterval(function() {
 			     window.JetEngine.ajaxGetListing(args, function(response){
-			     	$this.find('.elementor-widget-container').html(response.data.html);
+			     	let $container = $this.children('.elementor-widget-container');
+			     	$result = $( response.data.html );
+			     	$container.html( $result );
+			     	window.JetEngine.widgetListingGrid( $this );
+			     	window.JetEngine.initElementsHandlers( $container );
 			     });
 			}, interval*1000);
 
