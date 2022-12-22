@@ -24,6 +24,25 @@ class Croco_Customs_Listing_Reload{
     */
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'assets' ));
+        add_action( 'jet-engine/ajax-handlers/before-do-ajax', array( $this, 'table_reload' ) );
+    }
+
+    public function table_reload() {
+        if ( ! empty( $_REQUEST['handler'] ) && 'reload_table_on_interval' === $_REQUEST['handler'] ) {
+
+            $table_id = absint( $_REQUEST['table_id'] );
+            $settings = [ 'table_id' => $table_id ];
+            
+            $render = jet_engine()->listings->get_render_instance( 'dynamic-table', $settings );
+
+            ob_start();
+            $render->setup_table( $table_id, array(), $render->get_settings() );
+            $render->table_body();
+            $content = ob_get_clean();
+
+            wp_send_json_success( $content );
+
+        }
     }
 
    /**
